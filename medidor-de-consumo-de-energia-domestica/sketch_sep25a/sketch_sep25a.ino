@@ -12,6 +12,7 @@
 EnergyMonitor emon1;
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
+float energy = 0.0;
 int lastUpdate = 0;
 int currentIndex = 0;
 char* lyrics[] = { 
@@ -38,13 +39,26 @@ void setup()
 void loop()
 {
   //Calcula a corrente
-  //double Irms = emon1.calcIrms(1480);
+  double Irms = emon1.calcIrms(1480);
   int time = millis();
   //Mostra o valor da corrente no serial monitor e display
-  //Serial.print("Corrente : ");
-  //Serial.print(Irms); // Irms
-  //Serial.print("A\n");
+  Serial.print("Corrente : ");
+  if(Irms <= 0.01) {
+    Irms = 0.0;
+  }
+  Serial.print(Irms); // Irms
   
+  Serial.print("A\n");
+  
+  
+  energy = energy + (Irms * 127.0);
+  Serial.print("energia: ");
+  Serial.print(energy);
+  Serial.print("\n");  
+  float valor = (energy * 0.003  ); // caso o kw custe 30 centavos
+  Serial.print("R$ ");
+  Serial.print(valor);
+  Serial.print("\n"); 
   delay(1000);
   if ((time  - lastUpdate) >= 800)
   {

@@ -16,7 +16,7 @@ float energy = 0.0;
 int lastUpdate = 0;
 int currentIndex = 0;
 char* lyrics[] = { 
-  "qualquer texto" 
+  "M. Energia R$" 
 };
  
  
@@ -55,10 +55,16 @@ void loop()
   Serial.print("energia: ");
   Serial.print(energy);
   Serial.print("\n");  
-  float valor = (energy * 0.003  ); // caso o kw custe 30 centavos
+  float valor = (energy * 0.0003  ); // caso o kw custe 30 centavos
   Serial.print("R$ ");
   Serial.print(valor);
   Serial.print("\n"); 
+  char buff[10];
+  dtostrf(valor, 4, 2, buff); 
+  char valueToPrint[] = "R$ ";
+  strcat(valueToPrint,buff);
+  char *lyrics[] = {valueToPrint};
+  
   delay(1000);
   if ((time  - lastUpdate) >= 800)
   {
@@ -71,14 +77,15 @@ void loop()
     {
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print(lyrics[currentIndex]);
+      lcd.print(lyrics[0]);
+      
     }
     else
     {
       // If we are writing the second line, move the cursor there
       // and print the appropriate line.
       lcd.setCursor(0, 1);
-      lcd.print(lyrics[currentIndex]);
+      lcd.print(lyrics[0]);
     }
     
     // Increment or reset the current index.

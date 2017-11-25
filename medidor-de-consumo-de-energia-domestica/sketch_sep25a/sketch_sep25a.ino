@@ -7,21 +7,21 @@
 
 #include "EmonLib.h"
 #include <SPI.h>
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
  
 EnergyMonitor emon1;
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+//LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-float energy = 0.0;
-int lastUpdate = 0;
-int currentIndex = 0;
-char* lyrics[] = { 
+//float energy = 0.0;
+//int lastUpdate = 0;
+//int currentIndex = 0;
+/*char* lyrics[] = { 
   "M. Energia R$" 
 };
  
  
 //Tensao da rede eletrica
-int rede = 220;
+int rede = 220;*/
  
 //Pino do sensor SCT
 int pino_sct = A1;
@@ -31,7 +31,7 @@ void setup()
   Serial.begin(9600);
   //Pino, calibracao - Cur Const= Ratio/BurdenR. 2000/33 = 60
   emon1.current(pino_sct, 0.12);
-  lcd.begin(16, 2);
+  //lcd.begin(16, 2);
   
   
 }
@@ -39,34 +39,39 @@ void setup()
 void loop()
 {
   //Calcula a corrente
-  double Irms = emon1.calcIrms(1480);
-  int time = millis();
+  float Irms = emon1.calcIrms(1480);
+  char buff[10];
+  //int time = millis();
   //Mostra o valor da corrente no serial monitor e display
-  Serial.print("Corrente : ");
+  //Serial.print("Corrente : ");
   if(Irms <= 0.01) {
     Irms = 0.0;
   }
-  Serial.print(Irms); // Irms
+ 
+  Serial.print(Irms);
   
-  Serial.print("A\n");
+  Serial.print("\n");
+  //Serial.print(Irms); // Irms
+  
+  //Serial.print("A\n");
   
   
-  energy = energy + (Irms * 127.0);
-  Serial.print("energia: ");
-  Serial.print(energy);
-  Serial.print("\n");  
-  float valor = (energy * 0.0003  ); // caso o kw custe 30 centavos
-  Serial.print("R$ ");
-  Serial.print(valor);
-  Serial.print("\n"); 
-  char buff[10];
-  dtostrf(valor, 4, 2, buff); 
-  char valueToPrint[] = "R$ ";
-  strcat(valueToPrint,buff);
-  char *lyrics[] = {valueToPrint};
+  //energy = energy + (Irms * 127.0);
+  //Serial.print("energia: ");
+  //Serial.print(energy);
+  //Serial.print("\n");  
+  //float valor = (energy * 0.0003  ); // caso o kw custe 30 centavos
+  //Serial.print("R$ ");
+  //Serial.print(valor);
+  //Serial.print("\n"); 
+  //char buff[10];
+  //dtostrf(valor, 4, 2, buff); 
+  //char valueToPrint[] = "R$ ";
+  //strcat(valueToPrint,buff);
+  //char *lyrics[] = {valueToPrint};
   
-  delay(1000);
-  if ((time  - lastUpdate) >= 800)
+  //delay(1000);
+  /*if ((time  - lastUpdate) >= 800)
   {
     // Move the cursor back to the first column of the first row.
     lcd.setCursor(0, 0);
@@ -101,5 +106,5 @@ void loop()
     // Update the time that we last refreshed the screen to track
     // when to update it again.
     lastUpdate = time;
-  } 
+  }*/ 
 }
